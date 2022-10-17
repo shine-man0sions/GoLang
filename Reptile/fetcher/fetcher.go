@@ -1,41 +1,56 @@
 package fetcher
 
 import (
+	"bufio"
 	"fmt"
+	"golang.org/x/net/html/charset"
+	"golang.org/x/text/encoding"
+	"golang.org/x/text/encoding/unicode"
+	"golang.org/x/text/transform"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
 )
 
 /*
-	返回[] byte 具体内容
+	传入url 发送请求
+	返回请求后的页面信息
+	返回错误信息 error
 */
 
 func Fetch(url string) ([]byte, error) {
-
-	// 获取get请求结果
+	// 发送http请求
 	resp, err := http.Get(url)
 
-	// 如果请求错误，返回错误信息
+	// 如果出错 return err
 	if err != nil {
 		return nil, err
 	}
 
-	// 延迟机制，在当前函数执行之后才执行
+	// 延时机制
 	defer resp.Body.Close()
 
-	// 判断http返回状态码的值，如果状态吗错误，返回状态码
+	// 如果http 错误，返回code码提示信息
 	if resp.StatusCode != http.StatusOK {
 		return nil,
-			fmt.Errorf("Wrong status code: %d", resp.StatusCode)
+			fmt.Errorf("wrong status code: %d", resp.StatusCode)
 	}
 
-	// 如果返回数据有错，返回错误
+	e := determineEncoding(resp.Body)
+	utf8Reader := transform.NewReader(resp.Body, e.NewDecoder())
+
+	return ioutil.ReadAll(utf8Reader)
+}
+
+// 判断页面code, 如果不是utf-8, 转换成utf-8
+
+func determineEncoding(r io.Reader) encoding.Encoding {
+	bytes, err := bufio.NewReader(r).Peek(1024)
 	if err != nil {
-		log.Printf("Fetcher error: %d\n", err)
-		return nil, err
+		log.Printf("Fetcher error: %v", err)
+		return unicode.UTF8
 	}
-
-	// 返回抓包结果
-	return ioutil.ReadAll(resp.Body)
+	e, _, _ := charset.DetermineEncoding(bytes, "")
+	return e
 }

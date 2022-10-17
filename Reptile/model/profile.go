@@ -14,4 +14,8 @@ type Profile struct {
 	Xinzuo     string
 	House      string
 	Car        string
+	Birth      string
+	Shuxiang   string
+	Address    string
+	Country    string
 }

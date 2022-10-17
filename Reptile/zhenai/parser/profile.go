@@ -5,19 +5,17 @@ import (
 	"GoLang/Reptile/model"
 	"log"
 	"regexp"
-	"strconv"
 )
 
-var ageRe = regexp.MustCompile(`<div class="m-btn purple" data-v-8b1eac0c>([^<]+)</div>`)
+var birthRe = regexp.MustCompile(`<td class=uservalue>([^<]+)&nbsp;[^>]+</td>`)
 
 func ParseProfile(contents []byte, name string) engine.ParseResult {
 	profile := model.Profile{}
 
 	profile.Name = name
-	age, err := strconv.Atoi(extractString(contents, ageRe))
-	if err != nil {
-		profile.Age = age
-	}
+
+	profile.Birth = extractString(contents, birthRe)
+
 	result := engine.ParseResult{
 		Items: []interface{}{profile},
 	}
