@@ -9,3 +9,7 @@ type ParseResult struct {
 	Request []Request
 	Items   []interface{}
 }
+
+func NilParser([]byte) ParseResult {
+	return ParseResult{}
+}

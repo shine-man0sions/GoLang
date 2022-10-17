@@ -7,6 +7,10 @@ import (
 	"net/http"
 )
 
+/*
+	返回[] byte 具体内容
+*/
+
 func Fetch(url string) ([]byte, error) {
 
 	// 获取get请求结果
@@ -23,12 +27,12 @@ func Fetch(url string) ([]byte, error) {
 	// 判断http返回状态码的值，如果状态吗错误，返回状态码
 	if resp.StatusCode != http.StatusOK {
 		return nil,
-		fmt.Errorf("Wrong status code: %d", resp.StatusCode)
+			fmt.Errorf("Wrong status code: %d", resp.StatusCode)
 	}
 
 	// 如果返回数据有错，返回错误
 	if err != nil {
-		log.Println("Fetcher error: %d\n", err)
+		log.Printf("Fetcher error: %d\n", err)
 		return nil, err
 	}
 

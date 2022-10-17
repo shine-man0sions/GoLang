@@ -1,22 +1,14 @@
-package Reptile
+package main
 
 import (
-	"io/ioutil"
-	"log"
-	"net/http"
-	"regexp"
+	"GoLang/Reptile/engine"
+	"GoLang/Reptile/zhenai/parser"
 )
 
 // main function
 func main() {
-
-
-	// 打印返回数据
-	printCityList(all)
+	engine.Run(engine.Request{
+		Url:        "http://www.zhenai.com/zhenghun",
+		ParserFunc: parser.ParseCityList,
+	})
 }
-
-
-// 城市解析器
-
-// 用户解析器
-
