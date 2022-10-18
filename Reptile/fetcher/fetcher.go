@@ -11,6 +11,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 )
 
 /*
@@ -19,7 +20,12 @@ import (
 	返回错误信息 error
 */
 
+var rateLimiter = time.Tick(100 * time.Microsecond)
+
 func Fetch(url string) ([]byte, error) {
+
+	<-rateLimiter
+
 	// 发送http请求
 	resp, err := http.Get(url)
 

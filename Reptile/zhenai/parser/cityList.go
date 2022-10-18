@@ -14,18 +14,14 @@ func ParseCityList(contents []byte) engine.ParseResult {
 
 	result := engine.ParseResult{}
 
-	var limit = 5
+	// 循环打印城市列表
 	for _, m := range match {
-
 		result.Items = append(result.Items, "City"+string(m[2]))
-		result.Request = append(result.Request, engine.Request{
-			Url:        Url + string(m[1]),
-			ParserFunc: ParseCity,
-		})
-		limit--
-		if limit == 0 {
-			break
-		}
+		result.Request = append(
+			result.Request, engine.Request{
+				Url:        string(m[1]),
+				ParserFunc: ParseCity,
+			})
 	}
 
 	return result
