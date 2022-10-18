@@ -1,0 +1,36 @@
+@startuml
+namespace engine {
+    class ParseResult << (S,Aquamarine) >> {
+        + Request []Request
+        + Items []<font color=blue>interface</font>{}
+
+    }
+    class Request << (S,Aquamarine) >> {
+        + Url string
+        + ParserFunc <font color=blue>func</font>([]byte) ParseResult
+
+    }
+}
+
+
+namespace model {
+    class Profile << (S,Aquamarine) >> {
+        + Name string
+        + Gender string
+        + Age int
+        + Height int
+        + Weight int
+        + Income string
+        + Marriage string
+        + Education string
+        + Occupation string
+        + Hokou string
+        + Xinzuo string
+        + House string
+        + Car string
+
+    }
+}
+
+
+@enduml
